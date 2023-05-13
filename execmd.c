@@ -46,6 +46,38 @@ void execmd(char **argv)
             }
             return;
         }
+        else if (strcmp(command, "setenv") == 0)
+        {
+            /* set a new environment variable or modify an existing one */
+            if (argv[1] && argv[2])
+            {
+                if (setenv(argv[1], argv[2], 1) == -1)
+                {
+                    perror("Error:");
+                }
+            }
+            else
+            {
+                fprintf(stderr, "Usage: setenv VARIABLE VALUE\n");
+            }
+            return;
+        }
+        else if (strcmp(command, "unsetenv") == 0)
+        {
+            /* remove an environment variable */
+            if (argv[1])
+            {
+                if (unsetenv(argv[1]) == -1)
+                {
+                    perror("Error:");
+                }
+            }
+            else
+            {
+                fprintf(stderr, "Usage: unsetenv VARIABLE\n");
+            }
+            return;
+        }
 
         /* generate the path to this command before passing it to execve */
         actual_command = get_location(command);

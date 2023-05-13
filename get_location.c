@@ -1,8 +1,13 @@
 #include "main.h"
 
-char *get_location(char *command){
-    char *path, *path_copy, *path_token, *file_path;
-    int command_length, directory_length;
+char *get_location(char *command)
+{
+    char *path; 
+    char *path_copy; 
+    char *path_token; 
+    char *file_path;
+    int command_length;
+    int directory_length;
     struct stat buffer;
     
     path = getenv("PATH");

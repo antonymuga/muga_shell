@@ -4,7 +4,8 @@ extern char **environ;
 
 void execmd(char **argv)
 {
-    char *command = NULL, *actual_command = NULL;
+    char *command = NULL;
+    char *actual_command = NULL;
     pid_t child_pid;
     int status;
     char *cwd;

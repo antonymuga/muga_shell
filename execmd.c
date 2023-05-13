@@ -123,7 +123,8 @@ void execmd(char **argv)
         {
             if (execve(actual_command, argv, NULL) == -1)
             {
-                printf("%s: No such file or directory", argv[0]);
+                /* printf("%s: No such file or directory", argv[0]); */
+                fprintf(stderr, "%s: No such file or directory\n", strerror(errno));
                 /* perror(argv[0]); */
             }
         }

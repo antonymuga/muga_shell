@@ -123,7 +123,7 @@ void execmd(char **argv)
         {
             if (execve(actual_command, argv, NULL) == -1)
             {
-                perror("Error:");
+                perror(argv[0])
             }
         }
         else

@@ -1,5 +1,7 @@
 #include "main.h"
 
+extern char **environ;
+
 void execmd(char **argv)
 {
     char *command = NULL, *actual_command = NULL;

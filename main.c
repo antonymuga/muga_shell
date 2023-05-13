@@ -1,71 +1,85 @@
 #include "main.h"
 
-int main(void) {
-    char prompt[] = "alx_shell:$ ";
-    char *lineptr = NULL;
+int main(int ac, char **argv)
+{
+    char *prompt = "alx_shell:$ ";
+    char *lineptr = NULL; 
+    char *lineptr_copy = NULL;
     size_t n = 0;
     ssize_t nchars_read;
     const char *delim = " \n";
-    char **args;
     int num_tokens = 0;
     char *token;
-    pid_t pid;
     int i;
 
-    while (1) {
+    /* declaring void variables */
+    (void)ac;
+
+    /* Create a loop for the shell's prompt */
+    while (1)
+    {
         printf("%s", prompt);
-
-        /* Use getline() to read input from the user */
         nchars_read = getline(&lineptr, &n, stdin);
-
-        if (nchars_read == -1) {
-            perror("Error reading input");
-            return EXIT_FAILURE;
+        /* check if the getline function failed or reached EOF or user use CTRL + D */
+        if (nchars_read == -1)
+        {
+            if (feof(stdin)) {  // end of file reached (e.g., CTRL + D)
+                printf("\n");
+                return (0);
+            }
+            perror("getline");
+            return (-1);
         }
 
-        /* Split the string into an array of words */
+        /* allocate space for a copy of the lineptr */
+        lineptr_copy = malloc(sizeof(char) * (nchars_read + 1));
+        if (lineptr_copy == NULL)
+        {
+            perror("malloc");
+            return (-1);
+        }
+        /* copy lineptr to lineptr_copy */
+        strcpy(lineptr_copy, lineptr);
+
+        /********** split the string (lineptr) into an array of words ********/
+        /* calculate the total number of tokens */
         token = strtok(lineptr, delim);
 
-        while (token != NULL) {
+        while (token != NULL)
+        {
             num_tokens++;
             token = strtok(NULL, delim);
         }
+        num_tokens++;
 
         /* Allocate space to hold the array of strings */
-        args = malloc(sizeof(char *) * (num_tokens + 1));
+        argv = malloc(sizeof(char *) * num_tokens);
 
-        /* Reset the lineptr and token variables for parsing */
-        lineptr = strtok(lineptr, "\n");
-        token = strtok(lineptr, delim);
-        i = 0;
+        /* Store each token in the argv array */
+        token = strtok(lineptr_copy, delim);
 
-        while (token != NULL) {
-            args[i] = strdup(token);
+        for (i = 0; token != NULL; i++)
+        {
+            argv[i] = malloc(sizeof(char) * (strlen(token) + 1));
+            strcpy(argv[i], token);
+
             token = strtok(NULL, delim);
-            i++;
         }
-        args[i] = NULL;
+        argv[i] = NULL;
 
-        /* Execute the command */
-        pid = fork();
-        if (pid == -1) {
-            perror("Error forking");
-        } else if (pid == 0) {
-            execmd(args);
-            exit(EXIT_FAILURE);
-        } else {
-            int status;
-            waitpid(pid, &status, 0);
-        }
+        /* execute the command */
+        execmd(argv);
 
-        /* Free the allocated memory */
-        for (i = 0; i < num_tokens; i++) {
-            free(args[i]);
+        /* free up allocated memory */
+        for (i = 0; i < num_tokens - 1; i++) {
+            free(argv[i]);
         }
-        free(args);
+        free(argv);
+        free(lineptr_copy);
+        free(lineptr);
+        lineptr = NULL;
         num_tokens = 0;
     }
 
-    free(lineptr);
-    return EXIT_SUCCESS;
+    return (0);
 }

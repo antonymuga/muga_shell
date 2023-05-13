@@ -9,6 +9,7 @@
 #include <sys/stat.h>
 #include <sys/wait.h>
 #include <errno.h>
+#include <signal.h>
 
 void execmd(char **argv);
 char *get_location(char *command);

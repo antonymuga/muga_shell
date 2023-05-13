@@ -22,6 +22,13 @@ void execmd(char **argv)
             return;
         }
 
+        /* added code for exit built-in */
+        else if (strcmp(command, "exit") == 0)
+        {
+            /* exit the shell */
+            exit(EXIT_SUCCESS);
+        }
+
         /* generate the path to this command before passing it to execve */
         actual_command = get_location(command);
         

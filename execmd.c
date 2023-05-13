@@ -11,11 +11,21 @@ void execmd(char **argv)
         /* get the command */
         command = argv[0];
 
+        /* check if it's a built-in command */
+        if (strcmp(command, "cd") == 0)
+        {
+            /* change directory */
+            if (chdir(argv[1]) == -1)
+            {
+                perror("Error:");
+            }
+            return;
+        }
+
         /* generate the path to this command before passing it to execve */
         actual_command = get_location(command);
         
         /* create child process */
-        
         child_pid = fork();
         if (child_pid == -1)
         {
@@ -34,5 +44,4 @@ void execmd(char **argv)
             wait(&status);
         }
     }
-    
 }

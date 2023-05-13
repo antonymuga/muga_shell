@@ -29,6 +29,18 @@ void execmd(char **argv)
             exit(EXIT_SUCCESS);
         }
 
+        /* Added code for env built-in */
+        else if (strcmp(command, "env") == 0)
+        {
+            /* print the environment variables */
+            char **env = environ;
+            while (*env)
+            {
+                printf("%s\n", *env++);
+            }
+            return;
+        }
+
         /* generate the path to this command before passing it to execve */
         actual_command = get_location(command);
         

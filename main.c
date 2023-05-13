@@ -21,7 +21,7 @@ int main(int ac, char **argv)
         printf("%s", prompt);
         nchars_read = getline(&lineptr, &n, stdin);
         /* check if the getline function failed or reached EOF or user use CTRL + D */
-        if (nchars_read == -1)
+        if (nchars_read <= 0)
         {
             return (-1);
         }

@@ -1,5 +1,7 @@
 #include "main.h"
 
+extern char **environ;
+
 int main(int ac, char **argv)
 {
     char *prompt = "alx_shell:$ ";

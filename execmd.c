@@ -26,7 +26,6 @@ void execmd(char **argv)
         {
             if (execve(actual_command, argv, NULL) == -1)
             {
-                // perror("%s:");
                 printf("%s: No such file or directory\n", argv[0]);
             }
         }

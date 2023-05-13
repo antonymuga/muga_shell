@@ -17,10 +17,39 @@ void execmd(char **argv)
         if (strcmp(command, "cd") == 0)
         {
             /* change directory */
-            if (chdir(argv[1]) == -1)
+            if (argv[1])
             {
-                perror("Error:");
+                if (strcmp(argv[1], "-") == 0)
+                {
+                    /* change to previous directory */
+                    if (chdir(getenv("OLDPWD")) == -1)
+                    {
+                        perror("Error:");
+                    }
+                }
+                else
+                {
+                    /* change to the specified directory */
+                    if (chdir(argv[1]) == -1)
+                    {
+                        perror("Error:");
+                    }
+                }
             }
+            else
+            {
+                /* change to home directory */
+                if (chdir(getenv("HOME")) == -1)
+                {
+                    perror("Error:");
+                }
+            }
+
+            /* update OLDPWD environment variable */
+            char *cwd = getcwd(NULL, 0);
+            setenv("OLDPWD", getenv("PWD"), 1);
+            setenv("PWD", cwd, 1);
+            free(cwd);
             return;
         }
         else if (strcmp(command, "exit") == 0)

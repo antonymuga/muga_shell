@@ -22,7 +22,6 @@ int main(int ac, char **argv)
         /* check if the getline function failed or reached EOF or user use CTRL + D */
         if (nchars_read == -1)
         {
-            printf("Exiting shell....\n");
             return (-1);
         }
 

@@ -9,6 +9,7 @@ int main(void) {
     char **args;
     int num_tokens = 0;
     char *token;
+    pid_t pid;
     int i;
 
     while (1) {
@@ -46,7 +47,7 @@ int main(void) {
         args[i] = NULL;
 
         /* Execute the command */
-        pid_t pid = fork();
+        pid = fork();
         if (pid == -1) {
             perror("Error forking");
         } else if (pid == 0) {

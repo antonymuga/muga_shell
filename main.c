@@ -1,9 +1,4 @@
-void execute_command(char **args) {
-    /* Execute the command */
-    if (execve(args[0], args, NULL) == -1) {
-        perror("Error executing command");
-    }
-}
+#include "main.h"
 
 int main(void) {
     char prompt[] = "alx_shell:$ ";
@@ -55,7 +50,7 @@ int main(void) {
         if (pid == -1) {
             perror("Error forking");
         } else if (pid == 0) {
-            execute_command(args);
+            execmd(args);
             exit(EXIT_FAILURE);
         } else {
             int status;

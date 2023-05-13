@@ -23,15 +23,19 @@ void execmd(char **argv)
             }
             return;
         }
-
-        /* added code for exit built-in */
         else if (strcmp(command, "exit") == 0)
         {
             /* exit the shell */
-            exit(EXIT_SUCCESS);
+            if (argv[1])
+            {
+                int exit_status = atoi(argv[1]);
+                exit(exit_status);
+            }
+            else
+            {
+                exit(EXIT_SUCCESS);
+            }
         }
-
-        /* Added code for env built-in */
         else if (strcmp(command, "env") == 0)
         {
             /* print the environment variables */

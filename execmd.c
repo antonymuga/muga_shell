@@ -7,6 +7,7 @@ void execmd(char **argv)
     char *command = NULL, *actual_command = NULL;
     pid_t child_pid;
     int status;
+    char *cwd;
 
     if (argv)
     {
@@ -46,7 +47,7 @@ void execmd(char **argv)
             }
 
             /* update OLDPWD environment variable */
-            char *cwd = getcwd(NULL, 0);
+            cwd = getcwd(NULL, 0);
             setenv("OLDPWD", getenv("PWD"), 1);
             setenv("PWD", cwd, 1);
             free(cwd);

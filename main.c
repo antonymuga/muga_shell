@@ -23,7 +23,7 @@ int main(int ac, char **argv)
         /* check if the getline function failed or reached EOF or user use CTRL + D */
         if (nchars_read == -1)
         {
-            if (feof(stdin)) {  // end of file reached (e.g., CTRL + D)
+            if (feof(stdin)) {  /* end of file reached (e.g., CTRL + D) */
                 printf("\n");
                 return (0);
             }

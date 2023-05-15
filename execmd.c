@@ -116,6 +116,22 @@ void execmd(char **argv)
         }
         else
         {
+            /* replace variable names with their corresponding values */
+            int i = 0;
+            while (argv[i])
+            {
+                if (argv[i][0] == '$')
+                {
+                    char *var_name = argv[i] + 1;
+                    char *var_value = getenv(var_name);
+                    if (var_value)
+                    {
+                        argv[i] = var_value;
+                    }
+                }
+                i++;
+            }
+
             /* generate the path to this command before passing it to execve */
             actual_command = get_location(command);
 
@@ -136,25 +152,7 @@ void execmd(char **argv)
             }
             else
             {
-                /* wait for child process to complete */
                 wait(&status);
-                /* handle logical operators */
-                if (strcmp(argv[1], "&&") == 0)
-                {
-                    if (WIFEXITED(status) && WEXITSTATUS(status) == 0)
-                    {
-                        /* execute the next command */
-                        execmd(argv + 2);
-                    }
-                }
-                else if (strcmp(argv[1], "||") == 0)
-                {
-                    if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
-                    {
-                        /* execute the next command */
-                        execmd(argv + 2);
-                    }
-                }
             }
         }
     }

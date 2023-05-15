@@ -14,6 +14,7 @@
 void execmd(char **argv);
 char *get_location(char *command);
 int stat(const char *pathname, struct stat *statbuf);
-void replace_variables(char **argv);
+/* void replace_variables(char **argv); */
+char *replace_variables(char *command);
 
 #endif

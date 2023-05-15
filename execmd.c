@@ -10,7 +10,6 @@ void execmd(char **argv)
     int status;
     char *cwd;
     char exit_code_str[10];
-    int x;
 
     if (argv)
     {

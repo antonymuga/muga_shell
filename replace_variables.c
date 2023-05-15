@@ -28,5 +28,5 @@ void replace_variables(char **argv)
             }
         }
     }
-    free(pid_str);
+    free(i);
 }

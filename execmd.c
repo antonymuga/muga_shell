@@ -9,6 +9,7 @@ void execmd(char **argv)
     pid_t child_pid;
     int status;
     char *cwd;
+    char exit_code_str[10];
 
     if (argv)
     {
@@ -142,7 +143,6 @@ void execmd(char **argv)
                 wait(&status);
                 
                 /* update the $? variable */
-                char exit_code_str[10];
                 sprintf(exit_code_str, "%d", WEXITSTATUS(status));
                 setenv("?", exit_code_str, 1);
             }

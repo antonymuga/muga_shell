@@ -146,6 +146,11 @@ void execmd(char **argv)
                 sprintf(exit_code_str, "%d", WEXITSTATUS(status));
                 setenv("?", exit_code_str, 1);
             }
+
+            if (actual_command != NULL) {
+                free(actual_command);
+                actual_command = NULL;
+            }
         }
     }
 }

@@ -39,3 +39,4 @@ void replace_variables(char **argv)
         }
     }
 }
+}

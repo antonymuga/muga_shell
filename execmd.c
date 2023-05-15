@@ -10,6 +10,7 @@ void execmd(char **argv)
     int status;
     char *cwd;
     char exit_code_str[10];
+    int x;
 
     if (argv)
     {
@@ -148,11 +149,11 @@ void execmd(char **argv)
                 free(actual_command);
             }
         }
-        
+
         /* free resources */
-        for (int i = 0; argv[i] != NULL; i++)
+        for (x = 0; argv[x] != NULL; x++)
         {
-            free(argv[i]);
+            free(argv[x]);
         }
     }
 }

@@ -150,6 +150,7 @@ void execmd(char **argv)
             if (actual_command != NULL) {
                 free(actual_command);
                 actual_command = NULL;
+                free(argv);
             }
         }
     }

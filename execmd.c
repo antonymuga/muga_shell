@@ -149,11 +149,5 @@ void execmd(char **argv)
                 free(actual_command);
             }
         }
-
-        /* free resources */
-        for (x = 0; argv[x] != NULL; x++)
-        {
-            free(argv[x]);
-        }
     }
 }

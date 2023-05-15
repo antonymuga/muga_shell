@@ -15,6 +15,11 @@ void execmd(char **argv)
         /* get the command */
         command = argv[0];
 
+        if (command[0] == '#')
+        {
+            return; /* ignore comments */
+        }
+
         /* check if it's a built-in command */
         if (strcmp(command, "cd") == 0)
         {

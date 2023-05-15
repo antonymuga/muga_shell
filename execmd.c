@@ -109,29 +109,39 @@ void execmd(char **argv)
             }
             return;
         }
-
-        /* generate the path to this command before passing it to execve */
-        actual_command = get_location(command);
-        
-        /* create child process */
-        child_pid = fork();
-        if (child_pid == -1)
-        {
-            exit(EXIT_FAILURE);
-        }
-        /* execute the actual command with execve */
-        if (child_pid == 0)
-        {
-            if (execve(actual_command, argv, NULL) == -1)
-            {
-                printf("%s: No such file or directory\n", argv[0]);
-                /* fprintf(stderr, "%s: No such file or directory\n", strerror(errno)); */
-                /* perror(argv[0]); */
-            }
-        }
         else
         {
-            wait(&status);
+            /* generate the path to this command before passing it to execve */
+            actual_command = get_location(command);
+
+            /* create child process */
+            child_pid = fork();
+            if (child_pid == -1)
+            {
+                exit(EXIT_FAILURE);
+            }
+            /* execute the actual command with execve */
+            if (child_pid == 0)
+            {
+                if (execve(actual_command, argv, NULL) == -1)
+                {
+                    printf("%s: No such file or directory\n", argv[0]);
+                    /* fprintf(stderr, "%s: No such file or directory\n", strerror(errno)); */
+                    /* perror(argv[0]); */
+                }
+            }
+            else
+            {
+                /* wait for the child process to complete */
+                waitpid(child_pid, &status, 0);
+
+                /* update OLDPWD environment variable */
+                cwd = getcwd(NULL, 0);
+                setenv("OLDPWD", getenv("PWD"), 1);
+                setenv("PWD", cwd, 1);
+                free(cwd);
+            }
         }
+
     }
 }

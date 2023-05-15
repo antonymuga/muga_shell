@@ -11,12 +11,13 @@ int main(int ac, char **argv)
     int num_tokens = 0;
     char *token;
     int i;
+    int interactive;
 
     /* declaring void variables */
     (void)ac;
 
     /* Check if running in interactive mode */
-    int interactive = isatty(STDIN_FILENO);
+    interactive = isatty(STDIN_FILENO);
 
     /* Create a loop for the shell's prompt */
     while (1)

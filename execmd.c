@@ -148,5 +148,11 @@ void execmd(char **argv)
                 free(actual_command);
             }
         }
+        
+        /* free resources */
+        for (int i = 0; argv[i] != NULL; i++)
+        {
+            free(argv[i]);
+        }
     }
 }

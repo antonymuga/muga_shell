@@ -15,10 +15,17 @@ int main(int ac, char **argv)
     /* declaring void variables */
     (void)ac;
 
+    /* Check if running in interactive mode */
+    int interactive = isatty(STDIN_FILENO);
+
     /* Create a loop for the shell's prompt */
     while (1)
     {
-        printf("%s", prompt);
+        /* Display prompt only in interactive mode */
+        if (interactive) {
+            printf("%s", prompt);
+        }
+
         nchars_read = getline(&lineptr, &n, stdin);
         /* check if the getline function failed or reached EOF or user use CTRL + D */
         if (nchars_read == -1)
@@ -79,6 +86,11 @@ int main(int ac, char **argv)
         free(lineptr);
         lineptr = NULL;
         num_tokens = 0;
+
+        /* Exit loop if not running in interactive mode */
+        if (!interactive) {
+            return 0;
+        }
     }
 
     return (0);

@@ -116,21 +116,8 @@ void execmd(char **argv)
         }
         else
         {
-            /* replace variable names with their corresponding values */
-            int i = 0;
-            while (argv[i])
-            {
-                if (argv[i][0] == '$')
-                {
-                    char *var_name = argv[i] + 1;
-                    char *var_value = getenv(var_name);
-                    if (var_value)
-                    {
-                        argv[i] = var_value;
-                    }
-                }
-                i++;
-            }
+            /* replace variables in arguments */
+            replace_variables(argv);
 
             /* generate the path to this command before passing it to execve */
             actual_command = get_location(command);
@@ -153,6 +140,11 @@ void execmd(char **argv)
             else
             {
                 wait(&status);
+                
+                /* update the $? variable */
+                char exit_code_str[10];
+                sprintf(exit_code_str, "%d", WEXITSTATUS(status));
+                setenv("?", exit_code_str, 1);
             }
         }
     }

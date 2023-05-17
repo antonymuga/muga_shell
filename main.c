@@ -77,10 +77,10 @@ int main(int ac, char **argv)
 
         /* execute the command */
         if (execve(argv[0], argv, NULL) == -1) {
-            fprintf(stderr, "%s: %d: %s: not found\n", argv[0], i + 2, argv[i]);
+            fprintf(stderr, "%s: %d: %s: not found\n", argv[0], 1, argv[0]);
             exit(EXIT_FAILURE);
         }
-
+        
         /* free up allocated memory */
         for (i = 0; i < num_tokens - 1; i++) {
             free(argv[i]);

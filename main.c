@@ -77,7 +77,7 @@ int main(int ac, char **argv)
 
         /* execute the command */
         if (execve(argv[0], argv, NULL) == -1) {
-            fprintf(stderr, "%s: %d: %s: not found\n", argv[0], i + 1, argv[i]);
+            fprintf(stderr, "%s: %d: %s: not found\n", argv[0], i + 2, argv[i]);
             exit(EXIT_FAILURE);
         }
 

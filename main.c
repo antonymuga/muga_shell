@@ -1,8 +1,9 @@
 #include "main.h"
 
-int main(int argc, char **argv) {
+int main(int ac, char **argv)
+{
     char *prompt = "alx_shell:$ ";
-    char *lineptr = NULL;
+    char *lineptr = NULL; 
     char *lineptr_copy = NULL;
     size_t n = 0;
     ssize_t nchars_read;
@@ -13,34 +14,37 @@ int main(int argc, char **argv) {
     int interactive;
 
     /* declaring void variables */
-    (void)argc;
+    (void)ac;
 
     /* Check if running in interactive mode */
     interactive = isatty(STDIN_FILENO);
 
     /* Create a loop for the shell's prompt */
-    while (1) {
+    while (1)
+    {
         /* Display prompt only in interactive mode */
         if (interactive) {
             printf("%s", prompt);
         }
 
         nchars_read = getline(&lineptr, &n, stdin);
-        /* check if the getline function failed or reached EOF or user used CTRL + D */
-        if (nchars_read == -1) {
+        /* check if the getline function failed or reached EOF or user use CTRL + D */
+        if (nchars_read == -1)
+        {
             if (feof(stdin)) {  /* end of file reached (e.g., CTRL + D) */
                 printf("\n");
-                return 0;
+                return (0);
             }
             perror("getline");
-            return -1;
+            return (-1);
         }
 
         /* allocate space for a copy of the lineptr */
         lineptr_copy = malloc(sizeof(char) * (nchars_read + 1));
-        if (lineptr_copy == NULL) {
+        if (lineptr_copy == NULL)
+        {
             perror("malloc");
-            return -1;
+            return (-1);
         }
         /* copy lineptr to lineptr_copy */
         strcpy(lineptr_copy, lineptr);
@@ -49,7 +53,8 @@ int main(int argc, char **argv) {
         /* calculate the total number of tokens */
         token = strtok(lineptr, delim);
 
-        while (token != NULL) {
+        while (token != NULL)
+        {
             num_tokens++;
             token = strtok(NULL, delim);
         }
@@ -61,7 +66,8 @@ int main(int argc, char **argv) {
         /* Store each token in the argv array */
         token = strtok(lineptr_copy, delim);
 
-        for (i = 0; token != NULL; i++) {
+        for (i = 0; token != NULL; i++)
+        {
             argv[i] = malloc(sizeof(char) * (strlen(token) + 1));
             strcpy(argv[i], token);
 
@@ -70,7 +76,7 @@ int main(int argc, char **argv) {
         argv[i] = NULL;
 
         /* execute the command */
-        if (execvp(argv[0], argv) == -1) {
+        if (execve(argv[0], argv, NULL) == -1) {
             fprintf(stderr, "%s: %d: %s: not found\n", argv[0], i + 1, argv[i]);
             exit(EXIT_FAILURE);
         }
@@ -91,5 +97,5 @@ int main(int argc, char **argv) {
         }
     }
 
-    return 0;
+    return (0);
 }

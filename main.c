@@ -78,7 +78,7 @@ int main(int ac, char **argv)
         execmd(argv);
 
         /* execute the command */
-        if ((execve(argv[0], argv, NULL) == -1) == false)
+        if ((execve(argv[0], argv, NULL) == -1) == true)
         {
             execmd(argv);
         }

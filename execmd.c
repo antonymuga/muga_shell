@@ -108,10 +108,10 @@ void execmd(char **argv)
         {
             if (argv[1])
             {
-                // Execute the left command
+                /* Execute the left command */
                 execmd(argv + 1);
 
-                // If the left command succeeded, execute the right command
+                /* If the left command succeeded, execute the right command */
                 if (strcmp(getenv("?"), "0") == 0)
                 {
                     execmd(argv + 2);
@@ -127,10 +127,10 @@ void execmd(char **argv)
         {
             if (argv[1])
             {
-                // Execute the left command
+                /* Execute the left command */
                 execmd(argv + 1);
 
-                // If the left command failed, execute the right command
+                /* If the left command failed, execute the right command */
                 if (strcmp(getenv("?"), "0") != 0)
                 {
                     execmd(argv + 2);

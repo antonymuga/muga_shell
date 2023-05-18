@@ -19,20 +19,19 @@ void replace_variables(char **argv)
             else if (strcmp(argv[i], "$?") == 0)
             {
                 env_val = getenv("?");
-                free(argv[i]);
                 if (env_val != NULL)
                 {
+                    free(argv[i]);
                     argv[i] = strdup(env_val);
                 }
                 else
                 {
+                    free(argv[i]);
                     argv[i] = strdup("");
                 }
             }
             else
             {
-                /* Handle other cases where the variable starts with "$" */
-                /* Replace with appropriate code */
             }
         }
     }

@@ -1,27 +1,21 @@
 #include "main.h"
 
-int main(int ac, char **argv)
+int main(int ac, char **av)
 {
     char *prompt = "alx_shell:$ ";
-    char *lineptr = NULL; 
-    char *lineptr_copy = NULL;
+    char *lineptr = NULL;
     size_t n = 0;
     ssize_t nchars_read;
     const char *delim = " \n";
-    int num_tokens = 0;
-    char *token;
-    int i;
-    int interactive;
-    char **argv_copy;
+    int interactive = isatty(STDIN_FILENO);
 
     (void)ac;
-
-    interactive = isatty(STDIN_FILENO);
 
     while (1)
     {
         if (interactive) {
             printf("%s", prompt);
+            fflush(stdout);
         }
 
         nchars_read = getline(&lineptr, &n, stdin);
@@ -30,51 +24,24 @@ int main(int ac, char **argv)
         {
             if (feof(stdin)) {
                 printf("\n");
-                return (0);
+                free(lineptr);
+                return 0;
             }
             perror("getline");
-            return (-1);
+            free(lineptr);
+            return -1;
         }
 
-        lineptr_copy = malloc(sizeof(char) * (nchars_read + 1));
-        if (lineptr_copy == NULL)
-        {
-            perror("malloc");
-            return (-1);
-        }
+        char **argv = tokenize(lineptr, delim);
+        execmd(argv);
 
-        strcpy(lineptr_copy, lineptr);
-
-        token = strtok(lineptr, delim);
-
-        while (token != NULL)
-        {
-            num_tokens++;
-            token = strtok(NULL, delim);
-        }
-        num_tokens++;
-
-        argv_copy = malloc(sizeof(char *) * (num_tokens + 1));
-        for (i = 0; i < num_tokens; i++) {
-            argv_copy[i] = strdup(argv[i]);
-        }
-        argv_copy[num_tokens] = NULL;
-
-        execmd(argv_copy);
-
-        for (i = 0; i < num_tokens; i++) {
-            free(argv_copy[i]);
-        }
-        free(argv_copy);
-        free(lineptr_copy);
-        free(lineptr);
-        lineptr = NULL;
-        num_tokens = 0;
+        free_tokens(argv);
 
         if (!interactive) {
+            free(lineptr);
             return 0;
         }
     }
 
-    return (0);
+    return 0;
 }

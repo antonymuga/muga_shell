@@ -2,45 +2,36 @@
 
 char *get_location(char *command)
 {
-    char *path;
-    char *path_copy;
-    char *path_token;
-    char *file_path;
-    int command_length;
-    int directory_length;
-    struct stat buffer;
+    char *path = getenv("PATH");
+    char *path_copy = strdup(path);
 
-    path = getenv("PATH");
+    char *path_token = strtok(path_copy, ":");
+    char *file_path = NULL;
 
-    if (path) {
-        path_copy = strdup(path);
-        command_length = strlen(command);
+    while (path_token != NULL)
+    {
+        file_path = malloc(strlen(path_token) + strlen(command) + 2);
+        strcpy(file_path, path_token);
+        strcat(file_path, "/");
+        strcat(file_path, command);
 
-        path_token = strtok(path_copy, ":");
-
-        while (path_token != NULL) {
-            directory_length = strlen(path_token);
-            file_path = malloc(command_length + directory_length + 2);
-            strcpy(file_path, path_token);
-            strcat(file_path, "/");
-            strcat(file_path, command);
-
-            if (stat(file_path, &buffer) == 0) {
-                free(path_copy);
-                return file_path;
-            } else {
-                free(file_path);
-                path_token = strtok(NULL, ":");
-            }
+        if (access(file_path, X_OK) == 0)
+        {
+            free(path_copy);
+            return file_path;
         }
-
-        free(path_copy);
-
-        if (stat(command, &buffer) == 0) {
-            return strdup(command);
+        else
+        {
+            free(file_path);
+            path_token = strtok(NULL, ":");
         }
+    }
 
-        return NULL;
+    free(path_copy);
+
+    if (access(command, X_OK) == 0)
+    {
+        return strdup(command);
     }
 
     return NULL;

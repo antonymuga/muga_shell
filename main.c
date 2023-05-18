@@ -81,8 +81,11 @@ int main(int ac, char **argv)
 
         if ((execve(argv[0], argv, NULL) == -1) != true)
         {
-            fprintf(stderr, "%s: %d: %s: not found\n", argv[0], 1, argv[0]);
-            exit(EXIT_FAILURE);
+            if (execve(argv[0], argv, NULL) == -1)
+            {
+                fprintf(stderr, "%s: %d: %s: not found\n", argv[0], 1, argv[0]);
+                exit(EXIT_FAILURE);
+            }
         }
         else
         {

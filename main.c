@@ -78,9 +78,8 @@ int main(int ac, char **argv)
         /* execmd(argv); */
 
         /* execute the command */
-        while (execmd(argv) == true)
-        {
-            if ((execve(argv[0], argv, NULL) == -1) != true)
+
+        if ((execve(argv[0], argv, NULL) == -1) != true)
             {
                 fprintf(stderr, "%s: %d: %s: not found\n", argv[0], 1, argv[0]);
                 exit(EXIT_FAILURE);
@@ -89,7 +88,7 @@ int main(int ac, char **argv)
             {
                 execmd(argv);
             }
-        }
+        {
 
         /* free up allocated memory */
         for (i = 0; i < num_tokens - 1; i++) {

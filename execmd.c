@@ -104,14 +104,12 @@ void execmd(char **argv)
             }
             return;
         }
-                else if (strcmp(command, "&&") == 0)
+        else if (strcmp(command, "&&") == 0)
         {
             if (argv[1])
             {
-                /* Execute the left command */
                 execmd(argv + 1);
-
-                /* If the left command succeeded, execute the right command */
+                
                 if (strcmp(getenv("?"), "0") == 0)
                 {
                     execmd(argv + 2);
@@ -127,10 +125,10 @@ void execmd(char **argv)
         {
             if (argv[1])
             {
-                /* Execute the left command */
+                // Execute the left command
                 execmd(argv + 1);
 
-                /* If the left command failed, execute the right command */
+                // If the left command failed, execute the right command
                 if (strcmp(getenv("?"), "0") != 0)
                 {
                     execmd(argv + 2);
@@ -141,34 +139,6 @@ void execmd(char **argv)
                 fprintf(stderr, "Invalid usage of '||' operator\n");
             }
             return;
-        }
-        else
-        {
-            /* Existing code... */
-
-            actual_command = get_location(command);
-
-            child_pid = fork();
-            if (child_pid == -1)
-            {
-                exit(EXIT_FAILURE);
-            }
-
-            if (child_pid == 0)
-            {
-                if (execve(actual_command, argv, NULL) == -1)
-                {
-                    printf("%s: No such file or directory\n", command);
-                    exit(EXIT_FAILURE);
-                }
-            }
-            else
-            {
-                wait(&status);
-                sprintf(exit_code_str, "%d", WEXITSTATUS(status));
-                setenv("?", exit_code_str, 1);
-                free(actual_command);
-            }
         }
         else
         {

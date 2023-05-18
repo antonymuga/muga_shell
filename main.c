@@ -78,7 +78,11 @@ int main(int ac, char **argv)
         execmd(argv);
 
         /* execute the command */
-        if (execve(argv[0], argv, NULL) == -1) 
+        if (execmd(argv) != NULL)
+        {
+            execmd(argv);
+        }
+        else (execve(argv[0], argv, NULL) == -1) 
         {
             fprintf(stderr, "%s: %d: %s: not found\n", argv[0], 1, argv[0]);
             exit(EXIT_FAILURE);

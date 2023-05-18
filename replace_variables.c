@@ -31,8 +31,8 @@ void replace_variables(char **argv)
             }
             else
             {
-                // Handle other cases where the variable starts with "$"
-                // Replace with appropriate code
+                /* Handle other cases where the variable starts with "$" */
+                /* Replace with appropriate code */
             }
         }
     }

@@ -12,6 +12,7 @@ int main(int ac, char **argv)
     char *token;
     int i;
     int interactive;
+    char **argv_copy;
 
     (void)ac;
 
@@ -53,7 +54,7 @@ int main(int ac, char **argv)
         }
         num_tokens++;
 
-        char **argv_copy = malloc(sizeof(char *) * (num_tokens + 1));
+        argv_copy = malloc(sizeof(char *) * (num_tokens + 1));
         for (i = 0; i < num_tokens; i++) {
             argv_copy[i] = strdup(argv[i]);
         }

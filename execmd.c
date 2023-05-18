@@ -104,6 +104,44 @@ void execmd(char **argv)
             }
             return;
         }
+        else if (strcmp(command, "&&") == 0)
+        {
+            if (argv[1])
+            {
+                // Execute the left command
+                execmd(argv + 1);
+
+                // If the left command succeeded, execute the right command
+                if (strcmp(getenv("?"), "0") == 0)
+                {
+                    execmd(argv + 2);
+                }
+            }
+            else
+            {
+                fprintf(stderr, "Invalid usage of '&&' operator\n");
+            }
+            return;
+        }
+        else if (strcmp(command, "||") == 0)
+        {
+            if (argv[1])
+            {
+                // Execute the left command
+                execmd(argv + 1);
+
+                // If the left command failed, execute the right command
+                if (strcmp(getenv("?"), "0") != 0)
+                {
+                    execmd(argv + 2);
+                }
+            }
+            else
+            {
+                fprintf(stderr, "Invalid usage of '||' operator\n");
+            }
+            return;
+        }
         else
         {
             replace_variables(argv);

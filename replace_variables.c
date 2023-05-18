@@ -8,31 +8,32 @@ void replace_variables(char **argv)
 
     for (i = 0; argv[i] != NULL; i++)
     {
-    if (argv[i][0] == '$')
-    {
-        if (strcmp(argv[i], "$$") == 0)
+        if (argv[i][0] == '$')
         {
-            sprintf(pid_str, "%d", getpid());
-            free(argv[i]);
-            argv[i] = strdup(pid_str);
-        }
-        else if (strcmp(argv[i], "$?") == 0)
-        {
-            env_val = getenv("?");
-            free(argv[i]);
-            if (env_val != NULL)
+            if (strcmp(argv[i], "$$") == 0)
             {
-                argv[i] = strdup(env_val);
+                sprintf(pid_str, "%d", getpid());
+                free(argv[i]);
+                argv[i] = strdup(pid_str);
+            }
+            else if (strcmp(argv[i], "$?") == 0)
+            {
+                env_val = getenv("?");
+                free(argv[i]);
+                if (env_val != NULL)
+                {
+                    argv[i] = strdup(env_val);
+                }
+                else
+                {
+                    argv[i] = strdup("");
+                }
             }
             else
             {
-                argv[i] = strdup("");
+                // Handle other cases where the variable starts with "$"
+                // Replace with appropriate code
             }
         }
-        else
-        {
-            /* ... */
-        }
     }
-}
 }

@@ -53,25 +53,18 @@ int main(int ac, char **argv)
         }
         num_tokens++;
 
-        argv = malloc(sizeof(char *) * num_tokens);
-
-        token = strtok(lineptr_copy, delim);
-
-        for (i = 0; token != NULL; i++)
-        {
-            argv[i] = malloc(sizeof(char) * (strlen(token) + 1));
-            strcpy(argv[i], token);
-
-            token = strtok(NULL, delim);
+        char **argv_copy = malloc(sizeof(char *) * (num_tokens + 1));
+        for (i = 0; i < num_tokens; i++) {
+            argv_copy[i] = strdup(argv[i]);
         }
-        argv[i] = NULL;
+        argv_copy[num_tokens] = NULL;
 
-        execmd(argv);
+        execmd(argv_copy);
 
-        for (i = 0; i < num_tokens - 1; i++) {
-            free(argv[i]);
+        for (i = 0; i < num_tokens; i++) {
+            free(argv_copy[i]);
         }
-        free(argv);
+        free(argv_copy);
         free(lineptr_copy);
         free(lineptr);
         lineptr = NULL;

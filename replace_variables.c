@@ -8,17 +8,14 @@ void replace_variables(char **argv)
 
     for (i = 0; argv[i] != NULL; i++)
     {
-    /* check if the argument starts with $ */
     if (argv[i][0] == '$')
     {
-        /* check if it's the $$ variable */
         if (strcmp(argv[i], "$$") == 0)
         {
             sprintf(pid_str, "%d", getpid());
             free(argv[i]);
             argv[i] = strdup(pid_str);
         }
-        /* check if it's the $? variable */
         else if (strcmp(argv[i], "$?") == 0)
         {
             env_val = getenv("?");
@@ -32,7 +29,6 @@ void replace_variables(char **argv)
                 argv[i] = strdup("");
             }
         }
-        /* handle other variables here */
         else
         {
             /* ... */

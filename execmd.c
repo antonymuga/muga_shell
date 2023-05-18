@@ -106,7 +106,7 @@ void execmd(char **argv)
         }
         else if (strcmp(command, "&&") == 0)
         {
-            if (argv[1])
+            if (argv[1] && argv[2])
             {
                 execmd(argv + 1);
 
@@ -123,7 +123,7 @@ void execmd(char **argv)
         }
         else if (strcmp(command, "||") == 0)
         {
-            if (argv[1])
+            if (argv[1] && argv[2])
             {
                 execmd(argv + 1);
 

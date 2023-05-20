@@ -1,14 +1,14 @@
 #include "main.h"
 
 /**
- * execmd - Runs the provided command
+ * runCommand - Runs the provided command
  * @argv: arguement vector array
  * Description: The executor takes and array of commands
  * and executes them
  * Return: The void
  */
 
-void execmd(char **argv)
+void runCommand(char **argv)
 {
 	char *command = NULL;
 	char *actual_command = NULL;
@@ -113,7 +113,7 @@ void execmd(char **argv)
 		else
 		{
 			replace_variables(argv);
-			actual_command = get_location(command);
+			actual_command = getPath(command);
 			child_pid = fork();
 			if (child_pid == -1)
 			{

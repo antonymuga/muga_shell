@@ -12,26 +12,25 @@ int main(int ac, char **argv)
     char *token;
     int i;
     int interactive;
-
-    /* declaring void variables */
+    
     (void)ac;
 
-    /* Check if running in interactive mode */
+   
     interactive = isatty(STDIN_FILENO);
 
-    /* Create a loop for the shell's prompt */
+    
     while (1)
     {
-        /* Display prompt only in interactive mode */
+        
         if (interactive) {
             printf("%s", prompt);
         }
 
         nchars_read = getline(&lineptr, &n, stdin);
-        /* check if the getline function failed or reached EOF or user use CTRL + D */
+        
         if (nchars_read == -1)
         {
-            if (feof(stdin)) {  /* end of file reached (e.g., CTRL + D) */
+            if (feof(stdin)) {  
                 printf("\n");
                 return (0);
             }
@@ -39,18 +38,17 @@ int main(int ac, char **argv)
             return (-1);
         }
 
-        /* allocate space for a copy of the lineptr */
+       
         lineptr_copy = malloc(sizeof(char) * (nchars_read + 1));
         if (lineptr_copy == NULL)
         {
             perror("malloc");
             return (-1);
         }
-        /* copy lineptr to lineptr_copy */
+        
         strcpy(lineptr_copy, lineptr);
 
-        /********** split the string (lineptr) into an array of words ********/
-        /* calculate the total number of tokens */
+        
         token = strtok(lineptr, delim);
 
         while (token != NULL)
@@ -60,10 +58,10 @@ int main(int ac, char **argv)
         }
         num_tokens++;
 
-        /* Allocate space to hold the array of strings */
+        
         argv = malloc(sizeof(char *) * num_tokens);
 
-        /* Store each token in the argv array */
+        
         token = strtok(lineptr_copy, delim);
 
         for (i = 0; token != NULL; i++)
@@ -77,7 +75,7 @@ int main(int ac, char **argv)
 
         execmd(argv);
 
-        /* free up allocated memory */
+        
         for (i = 0; i < num_tokens - 1; i++) {
             free(argv[i]);
         }
@@ -87,7 +85,7 @@ int main(int ac, char **argv)
         lineptr = NULL;
         num_tokens = 0;
 
-        /* Exit loop if not running in interactive mode */
+        
         if (!interactive) {
             return 0;
         }

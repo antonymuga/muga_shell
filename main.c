@@ -75,7 +75,7 @@ int main(int ac, char **argv)
 			token = strtok(NULL, delim);
 		}
 		argv[i] = NULL;
-		execmd(argv);
+		runCommand(argv);
 
 		for (i = 0; i < num_tokens - 1; i++)
 		{

@@ -1,14 +1,14 @@
 #include "main.h"
 
 /**
- * get_location - Gets the path of a command
+ * getPath - Gets the path of a command
  * @command: the command of whose path
  * we are trying to extract
  * Description: Find the path os a given command
  * Return: a string value for the path
  */
 
-char *get_location(char *command)
+char *getPath(char *command)
 {
 	char *path;
 	char *path_copy;

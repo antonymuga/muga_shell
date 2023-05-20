@@ -12,6 +12,8 @@
 #include <signal.h>
 #include <stdbool.h>
 
+extern char **environ;
+
 void execmd(char **argv);
 char *get_location(char *command);
 int stat(const char *pathname, struct stat *statbuf);

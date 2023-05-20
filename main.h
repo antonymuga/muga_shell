@@ -17,6 +17,6 @@ extern char **environ;
 void runCommand(char **argv);
 char *getPath(char *command);
 int stat(const char *pathname, struct stat *statbuf);
-void replace_variables(char **argv);
+void variableHandler(char **argv);
 
 #endif

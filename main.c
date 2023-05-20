@@ -1,95 +1,97 @@
 #include "main.h"
 
+/**
+ * main - program entry point
+ * @ac: arguement count
+ * @argv: arguement vector of commands
+ * Description: this is the core logic of the shell
+ * Return: status or exit code
+ */
+
 int main(int ac, char **argv)
 {
-    char *prompt = "alx_shell:$ ";
-    char *lineptr = NULL; 
-    char *lineptr_copy = NULL;
-    size_t n = 0;
-    ssize_t nchars_read;
-    const char *delim = " \n";
-    int num_tokens = 0;
-    char *token;
-    int i;
-    int interactive;
-    
-    (void)ac;
+	char *prompt = "alx_shell:$ ";
+	char *lineptr = NULL;
+	char *lineptr_copy = NULL;
+	size_t n = 0;
+	ssize_t nchars_read;
+	const char *delim = " \n";
+	int num_tokens = 0;
+	char *token;
+	int i;
+	int interactive;
 
-   
-    interactive = isatty(STDIN_FILENO);
+	(void)ac;
 
-    
-    while (1)
-    {
-        
-        if (interactive) {
-            printf("%s", prompt);
-        }
+	interactive = isatty(STDIN_FILENO);
 
-        nchars_read = getline(&lineptr, &n, stdin);
-        
-        if (nchars_read == -1)
-        {
-            if (feof(stdin)) {  
-                printf("\n");
-                return (0);
-            }
-            perror("getline");
-            return (-1);
-        }
+	while (1)
+	{
+		if (interactive)
+		{
+			printf("%s", prompt);
+		}
 
-       
-        lineptr_copy = malloc(sizeof(char) * (nchars_read + 1));
-        if (lineptr_copy == NULL)
-        {
-            perror("malloc");
-            return (-1);
-        }
-        
-        strcpy(lineptr_copy, lineptr);
+		nchars_read = getline(&lineptr, &n, stdin);
 
-        
-        token = strtok(lineptr, delim);
+		if (nchars_read == -1)
+		{
+			if (feof(stdin))
+			{
+				printf("\n");
+				return (0);
+			}
 
-        while (token != NULL)
-        {
-            num_tokens++;
-            token = strtok(NULL, delim);
-        }
-        num_tokens++;
+			perror("getline");
 
-        
-        argv = malloc(sizeof(char *) * num_tokens);
+			return (-1);
+		}
 
-        
-        token = strtok(lineptr_copy, delim);
+		lineptr_copy = malloc(sizeof(char) * (nchars_read + 1));
 
-        for (i = 0; token != NULL; i++)
-        {
-            argv[i] = malloc(sizeof(char) * (strlen(token) + 1));
-            strcpy(argv[i], token);
+		if (lineptr_copy == NULL)
+		{
+			perror("malloc");
+			return (-1);
+		}
 
-            token = strtok(NULL, delim);
-        }
-        argv[i] = NULL;
+		strcpy(lineptr_copy, lineptr);
+		token = strtok(lineptr, delim);
 
-        execmd(argv);
+		while (token != NULL)
+		{
+			num_tokens++;
+			token = strtok(NULL, delim);
+		}
 
-        
-        for (i = 0; i < num_tokens - 1; i++) {
-            free(argv[i]);
-        }
-        free(argv);
-        free(lineptr_copy);
-        free(lineptr);
-        lineptr = NULL;
-        num_tokens = 0;
+		num_tokens++;
+		argv = malloc(sizeof(char *) * num_tokens);
+		token = strtok(lineptr_copy, delim);
 
-        
-        if (!interactive) {
-            return 0;
-        }
-    }
+		for (i = 0; token != NULL; i++)
+		{
+			argv[i] = malloc(sizeof(char) * (strlen(token) + 1));
+			strcpy(argv[i], token);
+			token = strtok(NULL, delim);
+		}
+		argv[i] = NULL;
+		execmd(argv);
 
-    return (0);
+		for (i = 0; i < num_tokens - 1; i++)
+		{
+			free(argv[i]);
+		}
+
+		free(argv);
+		free(lineptr_copy);
+		free(lineptr);
+		lineptr = NULL;
+		num_tokens = 0;
+
+		if (!interactive)
+		{
+			return (0);
+		}
+	}
+	return (0);
 }

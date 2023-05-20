@@ -112,7 +112,7 @@ void runCommand(char **argv)
 		}
 		else
 		{
-			replace_variables(argv);
+			variableHandler(argv);
 			actual_command = getPath(command);
 			child_pid = fork();
 			if (child_pid == -1)

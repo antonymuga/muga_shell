@@ -1,13 +1,13 @@
 #include "main.h"
 
 /**
- * replace_variables - subsitute variables with their values
+ * variableHandler - subsitute variables with their values
  * @argv: array of varibles of commands
  * Description: Replace the varibales with actual commands
  * Return: The void
  */
 
-void replace_variables(char **argv)
+void variableHandler(char **argv)
 {
 	int i;
 	char pid_str[10];

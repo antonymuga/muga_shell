@@ -2,85 +2,96 @@
 
 /**
  * main - program entry point
- * @ac: argument count
- * @argv: argument vector of commands
- * Description: This is the core logic of the shell
+ * @ac: arguement count
+ * @argv: arguement vector of commands
+ * Description: this is the core logic of the shell
  * Return: status or exit code
  */
 
 int main(int ac, char **argv)
 {
-    char *promptMessage = "alx_shell:$ ";
-    char *cmdLiteral = NULL;
-    char *cmdLiteralDup = NULL;
-    size_t numOfChars = 0;
-    ssize_t charsRead;
-    const char *delimiter = " \n";
-    int numOfTokens = 0;
-    char *token;
-    int index;
-    int interactive;
+	char *promptMessage = "alx_shell:$ ";
+	char *cmdLiteral = NULL;
+	char *cmdLiteralDup = NULL;
+	size_t numOfChars = 0;
+	ssize_t charsRead;
+	const char *delimiter = " \n";
+	int numOfTokens = 0;
+	char *token;
+	int index;
+	int interactive;
 
-    (void)ac;
+	(void)ac;
 
-    interactive = isatty(STDIN_FILENO);
+	interactive = isatty(STDIN_FILENO);
 
-    while (1)
-    {
-        if (interactive)
-        {
-            printf("%s", promptMessage);
-        }
+	while (1)
+	{
+		if (interactive)
+		{
+			printf("%s", promptMessage);
+		}
 
-        charsRead = getline(&cmdLiteral, &numOfChars, stdin);
+		charsRead = getline(&cmdLiteral, &numOfChars, stdin);
 
-        if (charsRead == -1)
-        {
-            if (feof(stdin))
-            {
-                printf("\n");
-                return (0);
-            }
+		if (charsRead == -1)
+		{
+			if (feof(stdin))
+			{
+				printf("\n");
+				return (0);
+			}
 
-            perror("getline");
-            return (-1);
-        }
+			perror("getline");
 
-        cmdLiteralDup = malloc(sizeof(char) * (charsRead + 1));
+			return (-1);
+		}
 
-        if (cmdLiteralDup == NULL)
-        {
-            perror("malloc");
-            return (-1);
-        }
+		cmdLiteralDup = malloc(sizeof(char) * (charsRead + 1));
 
-        strcpy(cmdLiteralDup, cmdLiteral);
-        token = strtok(cmdLiteral, delimiter);
+		if (cmdLiteralDup == NULL)
+		{
+			perror("malloc");
+			return (-1);
+		}
 
-        while (token != NULL)
-        {
-            numOfTokens++;
-            token = strtok(NULL, delimiter);
-        }
+		strcpy(cmdLiteralDup, cmdLiteral);
+		token = strtok(cmdLiteral, delim);
 
-        numOfTokens++;
-        char *commands = malloc(sizeof(char) * (charsRead + 1));
-        strcpy(commands, cmdLiteralDup);
+		while (token != NULL)
+		{
+			numOfTokens++;
+			token = strtok(NULL, delim);
+		}
 
-        /* Execute multiple commands */
-        executeCommands(commands);
+		numOfTokens++;
+		argv = malloc(sizeof(char *) * numOfTokens);
+		token = strtok(cmdLiteralDup, delim);
 
-        free(commands);
-        free(cmdLiteralDup);
-        free(cmdLiteral);
-        cmdLiteral = NULL;
-        numOfTokens = 0;
+		for (index = 0; token != NULL; index++)
+		{
+			argv[index] = malloc(sizeof(char) * (strlen(token) + 1));
+			strcpy(argv[index], token);
+			token = strtok(NULL, delim);
+		}
+		argv[index] = NULL;
+		runCommand(argv);
 
-        if (!interactive)
-        {
-            return (0);
-        }
-    }
+		for (index = 0; index < numOfTokens - 1; index++)
+		{
+			free(argv[index]);
+		}
 
-    return (0);
+		free(argv);
+		free(cmdLiteralDup);
+		free(cmdLiteral);
+		cmdLiteral = NULL;
+		numOfTokens = 0;
+
+		if (!interactive)
+		{
+			return (0);
+		}
+	}
+	return (0);
 }

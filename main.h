@@ -1,8 +1,6 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#define MAX_ARGS 100
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -20,6 +18,5 @@ void runCommand(char **argv);
 char *getPath(char *command);
 int stat(const char *pathname, struct stat *statbuf);
 void variableHandler(char **argv);
-void executeCommands(char *commands);
 
 #endif

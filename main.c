@@ -61,18 +61,18 @@ int main(int ac, char **argv)
 		while (token != NULL)
 		{
 			numOfTokens++;
-			token = strtok(NULL, delim);
+			token = strtok(NULL, delimiter);
 		}
 
 		numOfTokens++;
 		argv = malloc(sizeof(char *) * numOfTokens);
-		token = strtok(cmdLiteralDup, delim);
+		token = strtok(cmdLiteralDup, delimiter);
 
 		for (index = 0; token != NULL; index++)
 		{
 			argv[index] = malloc(sizeof(char) * (strlen(token) + 1));
 			strcpy(argv[index], token);
-			token = strtok(NULL, delim);
+			token = strtok(NULL, delimiter);
 		}
 		argv[index] = NULL;
 		runCommand(argv);

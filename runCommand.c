@@ -11,11 +11,11 @@
 void runCommand(char **argv)
 {
 	char *command = NULL;
-	char *actual_command = NULL;
-	pid_t child_pid;
+	char *finalCommand = NULL;
+	pid_t childProcess;
 	int status;
-	char *cwd;
-	char exit_code_str[10];
+	char *workingDir;
+	char exitCode[10];
 
 	if (argv)
 	{
@@ -53,18 +53,18 @@ void runCommand(char **argv)
 				}
 			}
 
-			cwd = getcwd(NULL, 0);
+			workingDir = getcwd(NULL, 0);
 			setenv("OLDPWD", getenv("PWD"), 1);
-			setenv("PWD", cwd, 1);
-			free(cwd);
+			setenv("PWD", workingDir, 1);
+			free(workingDir);
 			return;
 		}
 		else if (strcmp(command, "exit") == 0)
 		{
 			if (argv[1])
 			{
-				int exit_status = atoi(argv[1]);
-				exit(exit_status);
+				int exitStatus = atoi(argv[1]);
+				exit(exitStatus);
 			}
 			else
 			{
@@ -113,15 +113,15 @@ void runCommand(char **argv)
 		else
 		{
 			variableHandler(argv);
-			actual_command = getPath(command);
-			child_pid = fork();
-			if (child_pid == -1)
+			finalCommand = getPath(command);
+			childProcess = fork();
+			if (childProcess == -1)
 			{
 				exit(EXIT_FAILURE);
 			}
-			if (child_pid == 0)
+			if (childProcess == 0)
 			{
-				if (execve(actual_command, argv, NULL) == -1)
+				if (execve(finalCommand, argv, NULL) == -1)
 				{
 					printf("%s: No such file or directory\n", argv[0]);
 				}
@@ -129,9 +129,9 @@ void runCommand(char **argv)
 			else
 			{
 				wait(&status);
-				sprintf(exit_code_str, "%d", WEXITSTATUS(status));
-				setenv("?", exit_code_str, 1);
-				free(actual_command);
+				sprintf(exitCode, "%d", WEXITSTATUS(status));
+				setenv("?", exitCode, 1);
+				free(finalCommand);
 			}
 		}
 	}

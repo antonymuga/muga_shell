@@ -9,32 +9,32 @@
 
 void variableHandler(char **argv)
 {
-	int i;
-	char pid_str[10];
-	char *env_val;
+	int index;
+	char processString[10];
+	char *envValue;
 
-	for (i = 0; argv[i] != NULL; i++)
+	for (index = 0; argv[index] != NULL; index++)
 	{
-		if (argv[i][0] == '$')
+		if (argv[index][0] == '$')
 		{
-			if (strcmp(argv[i], "$$") == 0)
+			if (strcmp(argv[index], "$$") == 0)
 			{
-				sprintf(pid_str, "%d", getpid());
-				free(argv[i]);
-				argv[i] = strdup(pid_str);
+				sprintf(processString, "%d", getpid());
+				free(argv[index]);
+				argv[index] = strdup(processString);
 			}
-			else if (strcmp(argv[i], "$?") == 0)
+			else if (strcmp(argv[index], "$?") == 0)
 			{
-				env_val = getenv("?");
-				free(argv[i]);
+				envValue = getenv("?");
+				free(argv[index]);
 
-				if (env_val != NULL)
+				if (envValue != NULL)
 				{
-					argv[i] = strdup(env_val);
+					argv[index] = strdup(envValue);
 				}
 				else
 				{
-					argv[i] = strdup("");
+					argv[index] = strdup("");
 				}
 			}
 			else

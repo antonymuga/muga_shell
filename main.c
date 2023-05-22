@@ -10,15 +10,15 @@
 
 int main(int ac, char **argv)
 {
-	char *prompt = "alx_shell:$ ";
-	char *lineptr = NULL;
-	char *lineptr_copy = NULL;
-	size_t n = 0;
-	ssize_t nchars_read;
-	const char *delim = " \n";
-	int num_tokens = 0;
+	char *promptMessage = "alx_shell:$ ";
+	char *cmdLiteral = NULL;
+	char *cmdLiteralDup = NULL;
+	size_t numOfChars = 0;
+	ssize_t charsRead;
+	const char *delimiter = " \n";
+	int numOfTokens = 0;
 	char *token;
-	int i;
+	int index;
 	int interactive;
 
 	(void)ac;
@@ -29,12 +29,12 @@ int main(int ac, char **argv)
 	{
 		if (interactive)
 		{
-			printf("%s", prompt);
+			printf("%s", promptMessage);
 		}
 
-		nchars_read = getline(&lineptr, &n, stdin);
+		charsRead = getline(&cmdLiteral, &numOfChars, stdin);
 
-		if (nchars_read == -1)
+		if (charsRead == -1)
 		{
 			if (feof(stdin))
 			{
@@ -47,46 +47,46 @@ int main(int ac, char **argv)
 			return (-1);
 		}
 
-		lineptr_copy = malloc(sizeof(char) * (nchars_read + 1));
+		cmdLiteralDup = malloc(sizeof(char) * (charsRead + 1));
 
-		if (lineptr_copy == NULL)
+		if (cmdLiteralDup == NULL)
 		{
 			perror("malloc");
 			return (-1);
 		}
 
-		strcpy(lineptr_copy, lineptr);
-		token = strtok(lineptr, delim);
+		strcpy(cmdLiteralDup, cmdLiteral);
+		token = strtok(cmdLiteral, delim);
 
 		while (token != NULL)
 		{
-			num_tokens++;
+			numOfTokens++;
 			token = strtok(NULL, delim);
 		}
 
-		num_tokens++;
-		argv = malloc(sizeof(char *) * num_tokens);
-		token = strtok(lineptr_copy, delim);
+		numOfTokens++;
+		argv = malloc(sizeof(char *) * numOfTokens);
+		token = strtok(cmdLiteralDup, delim);
 
-		for (i = 0; token != NULL; i++)
+		for (index = 0; token != NULL; index++)
 		{
-			argv[i] = malloc(sizeof(char) * (strlen(token) + 1));
-			strcpy(argv[i], token);
+			argv[index] = malloc(sizeof(char) * (strlen(token) + 1));
+			strcpy(argv[index], token);
 			token = strtok(NULL, delim);
 		}
-		argv[i] = NULL;
+		argv[index] = NULL;
 		runCommand(argv);
 
-		for (i = 0; i < num_tokens - 1; i++)
+		for (index = 0; index < numOfTokens - 1; index++)
 		{
-			free(argv[i]);
+			free(argv[index]);
 		}
 
 		free(argv);
-		free(lineptr_copy);
-		free(lineptr);
-		lineptr = NULL;
-		num_tokens = 0;
+		free(cmdLiteralDup);
+		free(cmdLiteral);
+		cmdLiteral = NULL;
+		numOfTokens = 0;
 
 		if (!interactive)
 		{

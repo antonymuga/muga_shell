@@ -56,7 +56,7 @@ int main(int ac, char **argv)
 		}
 
 		strcpy(cmdLiteralDup, cmdLiteral);
-		token = strtok(cmdLiteral, delim);
+		token = strtok(cmdLiteral, delimiter);
 
 		while (token != NULL)
 		{

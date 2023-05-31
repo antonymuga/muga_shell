@@ -10,7 +10,7 @@
 
 int main(int ac, char **argv)
 {
-	char *promptMessage = "alx_shell:$ ";
+	char *promptMessage = "muga_shell:$ ";
 	char *cmdLiteral = NULL;
 	char *cmdLiteralDup = NULL;
 	size_t numOfChars = 0;
